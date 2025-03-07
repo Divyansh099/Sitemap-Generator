@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, send_file
 import os
-from sitemap_generator import SitemapGenerator  # Importing the SitemapGenerator class
+from sitemap_generator import SitemapGenerator  # Reverted import statement
+import re
 
 app = Flask(__name__)
 
@@ -29,6 +30,10 @@ def generate():
 
     if not url:
         return "No URL provided", 400
+
+    # Validate URL format
+    if not re.match(r'^(http|https)://', url):
+        return "Invalid URL format", 400
     
     try:
         # Create output directory if it doesn't exist
